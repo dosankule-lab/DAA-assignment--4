@@ -1,0 +1,10 @@
+**/build/
+**/bin/
+**/obj/
+__pycache__/
+*.class
+build_tests/
+
+.idea/
+*.iml
+build_tests/

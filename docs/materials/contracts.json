@@ -1,0 +1,344 @@
+{
+  "version": "2.1.0",
+  "tasks": [
+    {
+      "assignment": 4,
+      "task": 1,
+      "command": "lcs",
+      "name": "Compare two sequences — LCS",
+      "points": 8,
+      "purpose": "Compare two versions of a sequence while preserving the order of shared characters.",
+      "input": "{task:lcs,a:string,b:string}",
+      "output": "{length,sequence:string}",
+      "domain": "0 <= |a|,|b| <= 1000; |a|*|b| <= 1000000.",
+      "requirements": "Implement prefix dynamic programming and reconstruct one longest common subsequence. sequence must be a subsequence of both input strings and have the optimal length. It need not be contiguous. Any optimal sequence is accepted. If either input string is empty, return length=0 and sequence=\"\". Explain states, transitions, base cases and reconstruction in ANALYSIS.md.",
+      "complexity": "O((|a|+1)(|b|+1)) time and memory are permitted, including empty inputs.",
+      "example_in": {
+        "task": "lcs",
+        "a": "tea_time",
+        "b": "team"
+      },
+      "example_out": {
+        "length": 4,
+        "sequence": "team"
+      },
+      "example_note": "The final m in tea_time is separated from the preceding letters: team is a subsequence, not a substring.",
+      "name_ru": "Сравнение последовательностей — LCS",
+      "purpose_ru": "Сопоставьте две версии последовательности и найдите общие символы с сохранением порядка.",
+      "ru": {
+        "domain": "0 ≤ |a|, |b| ≤ 1000; |a|·|b| ≤ 1000000.",
+        "requirements": "Реализуйте динамическое программирование по префиксам и восстановите одну наибольшую общую подпоследовательность. sequence должна быть подпоследовательностью обеих строк и иметь оптимальную длину. Символы не обязаны идти подряд. При нескольких оптимумах принимается любой. Если хотя бы одна строка пуста, length=0 и sequence=\"\". Объясните состояние, переходы, базовые случаи и восстановление.",
+        "complexity": "O((|a|+1)(|b|+1)) времени и памяти разрешены; такая запись учитывает пустые строки.",
+        "note": "В tea_time символ m находится после i: team — подпоследовательность, но не подстрока.",
+        "explain": "Почему при несовпадении последних символов достаточно сравнить два меньших префикса? Почему восстановленный ответ имеет оптимальную длину?"
+      },
+      "explain": "Define the prefix state and explain why the mismatch transition and reconstruction preserve an optimum."
+    },
+    {
+      "assignment": 4,
+      "task": 2,
+      "command": "merge",
+      "name": "Merge ordered blocks — interval DP",
+      "points": 7,
+      "purpose": "Plan the cheapest sequence of adjacent block merges when the original order must be preserved.",
+      "input": "{task:merge,sizes:[...]}",
+      "output": "{cost,plan:[[l,k,r],...]}",
+      "domain": "sizes is an array of n integers; 0 <= n <= 200 and 0 <= sizes[i] <= 1000000000.",
+      "requirements": "A current block represents a closed original interval. Merge adjacent blocks [l,k] and [k+1,r]; pay their combined size and replace them by [l,r]. Return the minimum total cost and a chronological valid plan using original indices. Each input block begins as [i,i]. For n<=1 cost=0 and plan=[]. Any optimal plan is accepted. Greedily choosing the smallest two arbitrary blocks violates adjacency. For n>1 the plan contains exactly n-1 merges.",
+      "complexity": "O(n^3) time and O(n^2) auxiliary memory for n>=1; O(1) for no blocks. No advanced DP optimization is required.",
+      "example_in": {
+        "task": "merge",
+        "sizes": [
+          2,
+          3,
+          4
+        ]
+      },
+      "example_out": {
+        "cost": 14,
+        "plan": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            2
+          ]
+        ]
+      },
+      "example_note": "The two merge costs are 5 and 9, giving 14; the other order gives 7+9=16.",
+      "name_ru": "Слияние упорядоченных блоков — интервальное DP",
+      "purpose_ru": "Найдите самый дешёвый порядок слияния соседних блоков, сохраняя исходный порядок.",
+      "ru": {
+        "domain": "0 ≤ n ≤ 200; 0 ≤ sizes[i] ≤ 1000000000; n — длина sizes.",
+        "requirements": "Каждый текущий блок представляет замкнутый интервал исходных индексов. Разрешено объединить существующие соседние блоки [l,k] и [k+1,r], заплатив сумму их размеров, и заменить их блоком [l,r]. Верните минимальную общую стоимость и хронологический план [l,k,r]. Изначально блоки равны [i,i]. При n≤1: cost=0, plan=[]. При n>1 план содержит n−1 слияний. Принимается любой оптимальный план. Выбор двух произвольных минимальных блоков нарушает требование смежности.",
+        "complexity": "O(n³) времени, O(n²) памяти; для пустого входа O(1). Продвинутые оптимизации DP не требуются.",
+        "note": "Сначала объединяются размеры 2 и 3: стоимость 5; затем 5 и 4: стоимость 9. Итого 14, а другой порядок даёт 16.",
+        "explain": "Что означает dp[l][r]? Почему последний split делит оптимальный план на два оптимальных подплана? Почему выводить план нужно после планов детей?"
+      },
+      "explain": "Define the interval state, explain the last split and why the plan must output child merges before their parent merge."
+    },
+    {
+      "assignment": 4,
+      "task": 3,
+      "command": "tree",
+      "name": "Select compatible vertices — tree DP",
+      "points": 7,
+      "purpose": "Choose a maximum-value set when neighbouring vertices are incompatible and conflicts form a tree.",
+      "input": "{task:tree,n,weights:[...],edges:[[u,v],...]}",
+      "output": "{weight,selected:[vertex IDs,...]}",
+      "domain": "n is an integer in 0..100000. weights has exactly n integer entries; -1000000000 <= weights[i] <= 1000000000. For n>0, edges contains n-1 distinct undirected edges forming a connected tree; every endpoint is an integer in 0..n-1. For n=0, weights and edges are empty. The output total weight is not limited to the bound on one entry.",
+      "requirements": "Implement maximum weight independent set by take/skip tree DP and reconstruct a selected set. The empty set is allowed, so all-negative inputs return weight 0. No adjacent vertices may both be selected. Any optimum is accepted. Root choice must not change the optimum; avoid recursion failure on deep chains. Each selected vertex must occur once; order is unrestricted. For n=0 return weight=0 and selected=[].",
+      "complexity": "O(n+1) time and auxiliary memory, including reconstruction; the empty tree takes O(1).",
+      "example_in": {
+        "task": "tree",
+        "n": 3,
+        "weights": [
+          4,
+          9,
+          6
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ]
+      },
+      "example_out": {
+        "weight": 10,
+        "selected": [
+          0,
+          2
+        ]
+      },
+      "example_note": "Vertices 0 and 2 are nonadjacent and contribute 4+6=10; the middle vertex alone contributes 9.",
+      "name_ru": "Выбор совместимых вершин — Tree DP",
+      "purpose_ru": "Выберите набор максимального веса, если соседние вершины несовместимы, а связи образуют дерево.",
+      "ru": {
+        "domain": "n — целое от 0 до 100000; weights содержит ровно n целых чисел, −1000000000 ≤ weights[i] ≤ 1000000000. При n>0 edges задаёт связное неориентированное дерево из n−1 различных рёбер; концы — целые от 0 до n−1. При n=0 оба массива пусты. Граница одного weights[i] не ограничивает суммарный вес ответа.",
+        "requirements": "Реализуйте максимальное по суммарному весу независимое множество методом take/skip DP на дереве и восстановите выбранные вершины. Соседние вершины нельзя выбирать одновременно; каждая выбранная вершина встречается один раз. Пустое множество разрешено, поэтому при всех отрицательных весах ответ 0. При n=0 верните weight=0 и selected=[]. Порядок selected произвольный; при нескольких оптимумах принимается любой. Выбор корня не меняет оптимальный вес. Обработайте длинную цепочку без переполнения стека.",
+        "complexity": "O(n) времени и памяти для n>0, O(1) для пустого дерева.",
+        "note": "Вершины 0 и 2 не смежны и дают 4+6=10; выбор только центральной даёт 9.",
+        "explain": "Почему take[u] использует только skip детей, а skip[u] — максимум двух состояний? Как решение родителя ограничивает восстановление?"
+      },
+      "explain": "How take/skip and postorder work, and how the parent decision restricts reconstruction."
+    },
+    {
+      "assignment": 4,
+      "task": 4,
+      "command": "naive",
+      "name": "Exact search — naive baseline",
+      "points": 2,
+      "purpose": "Establish a simple exact-search baseline against which the other two searches can be checked.",
+      "input": "{task:naive,text:string,pattern:string}",
+      "output": "{positions:[...]}",
+      "domain": "0 <= |text| <= 3000; 0 <= |pattern| <= 3000.",
+      "requirements": "Implement naive character comparisons. Return ALL zero-based occurrence starts in strictly increasing order, including overlaps. Empty pattern matches every boundary 0..|text|, including the final boundary. Pattern longer than text returns []. No built-in search functions in the algorithm.",
+      "complexity": "With n=|text| and m=|pattern|: O(n*m+n+1) time after parsing, including the output; O(z+1) output memory for z starts and O(1) auxiliary memory. The empty-pattern case outputs n+1 starts.",
+      "example_in": {
+        "task": "naive",
+        "text": "aaaaa",
+        "pattern": "aaa"
+      },
+      "example_out": {
+        "positions": [
+          0,
+          1,
+          2
+        ]
+      },
+      "example_note": "All three starts are valid because overlaps count.",
+      "name_ru": "Точный поиск — наивный алгоритм",
+      "purpose_ru": "Получите простой точный поиск для сравнения результатов и времени других методов.",
+      "ru": {
+        "domain": "0 ≤ |text|, |pattern| ≤ 3000.",
+        "requirements": "Реализуйте посимвольное сравнение шаблона с каждым допустимым окном. Верните ВСЕ начальные индексы в строго возрастающем порядке, включая перекрытия. Пустой шаблон совпадает на каждой границе 0..|text| включительно; шаблон длиннее текста даёт []. Не заменяйте алгоритм встроенным поиском.",
+        "complexity": "При n=|text|, m=|pattern|: O(n·m+n+1) времени после разбора входа, включая вывод; O(z+1) памяти результата для z позиций и O(1) вспомогательной памяти. Пустой шаблон даёт n+1 позиций.",
+        "note": "Вхождения aaa в aaaaa начинаются с 0, 1 и 2; перекрытия разрешены.",
+        "explain": "Как проверить все допустимые старты и не потерять последний? Чем поиск всех вхождений отличается от первого?"
+      },
+      "explain": "The last valid start, overlaps and empty-pattern boundaries."
+    },
+    {
+      "assignment": 4,
+      "task": 4,
+      "command": "kmp",
+      "name": "Exact search — KMP",
+      "points": 5,
+      "purpose": "Reuse information about matched prefixes to avoid restarting the search after every mismatch.",
+      "input": "{task:kmp,text:string,pattern:string}",
+      "output": "{positions:[...]}",
+      "domain": "0 <= |text| <= 200000; 0 <= |pattern| <= 100000.",
+      "requirements": "Implement prefix function and KMP. Use exactly the same matching contract as naive, including the empty pattern. Keep overlaps after a full match using prefix fallback. Compare outputs of all three search algorithms on inputs in their common domain. Built-in search may not replace KMP.",
+      "complexity": "O(n+m+z+1) time, O(m+1) auxiliary memory and O(z+1) output memory, where n=|text|, m=|pattern| and z is the number of starts. An empty pattern returns all n+1 boundaries before any pattern indexing.",
+      "example_in": {
+        "task": "kmp",
+        "text": "abababa",
+        "pattern": "aba"
+      },
+      "example_out": {
+        "positions": [
+          0,
+          2,
+          4
+        ]
+      },
+      "example_note": "Prefix fallback after a match preserves the overlapping starts 2 and 4.",
+      "name_ru": "Точный поиск — KMP",
+      "purpose_ru": "Используйте уже известные совпадения префиксов при продолжении поиска.",
+      "ru": {
+        "domain": "0 ≤ |text| ≤ 200000; 0 ≤ |pattern| ≤ 100000.",
+        "requirements": "Реализуйте префикс-функцию и KMP. Контракт совпадений такой же, как у naive, включая пустой шаблон, порядок индексов и перекрытия. После полного совпадения продолжайте с префиксным fallback. Встроенный поиск не заменяет реализацию KMP. На общем диапазоне входов сравните результаты naive/KMP/RK.",
+        "complexity": "O(n+m+z+1) времени, O(m+1) вспомогательной памяти и O(z+1) памяти результата; n=|text|, m=|pattern|, z — число позиций. Пустой шаблон обрабатывается до обращения к его символам и даёт n+1 границ.",
+        "note": "После найденного aba нельзя безусловно обнулять совпавший префикс: можно потерять старты 2 и 4.",
+        "explain": "Что означает pi[i]? Почему fallback pi[j−1] сохраняет возможные совпадения и не требует возвращать индекс текста назад?"
+      },
+      "explain": "Define pi[i] and explain fallback after a mismatch and after a full match."
+    },
+    {
+      "assignment": 4,
+      "task": 4,
+      "command": "rk",
+      "name": "Exact search — Rabin–Karp",
+      "points": 3,
+      "purpose": "Reject windows with unequal fingerprints and verify every equal-hash candidate.",
+      "input": "{task:rk,text:string,pattern:string}",
+      "output": "{positions:[...]}",
+      "domain": "0 <= |text|,|pattern| <= 10000; |text|*|pattern| <= 20000000.",
+      "requirements": "Implement polynomial rolling hash. Use base 31, modulus 101 and ASCII character codes; highest power belongs to the leftmost character. This deliberately small modulus makes collisions testable. Normalize negative remainders. Equal hashes are candidates only: compare actual characters before reporting. The exact matching contract, including empty patterns and overlaps, is shared with KMP. 64-bit arithmetic is sufficient. No built-in search functions.",
+      "complexity": "For 1<=m<=n, O(n+m+c*m) time, where c is the number of equal-hash candidate windows; this can be quadratic. A bound covering all permitted inputs is O(n*m+n+m+1), including the n+1 empty-pattern starts. Handle m=0 and m>n before forming a window. O(m+1) auxiliary memory plus output is allowed for rolling windows; O(n+m+1) plus output is allowed with prefix hashes. Do not claim deterministic linear worst-case time.",
+      "example_in": {
+        "task": "rk",
+        "text": "abdj",
+        "pattern": "ab"
+      },
+      "example_out": {
+        "positions": [
+          0
+        ]
+      },
+      "example_note": "ab and dj both hash to 75 with base31/mod101; only ab is an actual match.",
+      "name_ru": "Точный поиск — Rabin–Karp",
+      "purpose_ru": "Отбрасывайте окна с другим хешем и проверяйте символы каждого кандидата с равным хешем.",
+      "ru": {
+        "domain": "0 ≤ |text|, |pattern| ≤ 10000; |text|·|pattern| ≤ 20000000.",
+        "requirements": "Реализуйте полиномиальный rolling hash: base=31, modulus=101, значения символов — ASCII-коды, наибольшая степень у левого символа. Это учебная конфигурация для наблюдения коллизий. Нормализуйте отрицательные остатки. При равных хешах сравнивайте реальные символы перед добавлением позиции. Контракт совпадений общий с naive/KMP. Встроенный поиск не заменяет алгоритм. Достаточно 64-битной арифметики.",
+        "complexity": "При 1≤m≤n: O(n+m+c·m), где c — число окон-кандидатов с равным хешем; возможен квадратичный случай. Общая оценка для всех допустимых входов: O(n·m+n+m+1), включая n+1 позиций пустого шаблона. Обработайте m=0 и m>n до построения окна. Для rolling windows разрешено O(m+1) вспомогательной памяти плюс результат; для prefix hashes — O(n+m+1) плюс результат. Безусловная линейная оценка неверна.",
+        "note": "ab и dj имеют хеш 75; только окно ab является совпадением. Это проверка коллизии, а не допустимый ложноположительный ответ.",
+        "explain": "Как обновляется хеш окна? Почему совпадение хешей не доказывает равенство строк? Что меняется во времени при множестве кандидатов?"
+      },
+      "explain": "The rolling update, collision verification and the effect of candidate windows on running time."
+    },
+    {
+      "assignment": 4,
+      "task": 5,
+      "command": "suffix",
+      "name": "Index repeated text — suffix array and Kasai LCP",
+      "points": 9,
+      "purpose": "Order the text suffixes and use adjacent common prefixes to find repeated substrings.",
+      "input": "{task:suffix,text:string}",
+      "output": "{sa:[...],lcp:[...],repeated:string}",
+      "domain": "0 <= |text| <= 50000. Build exactly the nonempty suffixes; do not include a sentinel or the empty suffix in output.",
+      "requirements": "Implement prefix doubling and Kasai. sa is a permutation of 0..n-1 in lexicographic suffix order. lcp has length n; lcp[0]=0 and lcp[i] compares sa[i-1] with sa[i]. Return any longest substring occurring at two distinct starts; overlaps are allowed. If none exists, repeated=\"\". For empty text, return sa=[], lcp=[] and repeated=\"\". Do not materialize all suffix strings.",
+      "complexity": "For n>=1, prefix doubling with comparison sorting takes O(n log^2(n+1)) time; linear-time counting/radix sorting of rank pairs per round permits O(n log(n+1)). Kasai takes O(n). Auxiliary and output memory are O(n+1). Empty input takes O(1).",
+      "example_in": {
+        "task": "suffix",
+        "text": "banana"
+      },
+      "example_out": {
+        "sa": [
+          5,
+          3,
+          1,
+          0,
+          4,
+          2
+        ],
+        "lcp": [
+          0,
+          1,
+          3,
+          0,
+          0,
+          2
+        ],
+        "repeated": "ana"
+      },
+      "example_note": "ana starts at 1 and 3; these occurrences overlap. Its length equals max(lcp).",
+      "name_ru": "Индекс повторов — суффиксный массив и Kasai LCP",
+      "purpose_ru": "Упорядочьте суффиксы и используйте общие префиксы соседей для поиска повторяющихся подстрок.",
+      "ru": {
+        "domain": "0 ≤ |text| ≤ 50000. В выходе только непустые суффиксы исходного текста; добавленный sentinel и пустой суффикс не выводятся.",
+        "requirements": "Постройте суффиксный массив методом prefix doubling, затем LCP алгоритмом Касаи. sa — перестановка 0..n−1 в лексикографическом порядке суффиксов. lcp имеет длину n: lcp[0]=0, lcp[i] сравнивает суффиксы sa[i−1] и sa[i]. repeated — любая самая длинная подстрока с двумя различными началами; перекрытия разрешены. Если повтора нет, repeated=\"\". При пустом тексте sa=[], lcp=[], repeated=\"\". Не создавайте в памяти все строки суффиксов.",
+        "complexity": "При n≥1 prefix doubling с comparison sort занимает O(n log²(n+1)); линейная counting/radix-сортировка rank pairs за раунд позволяет O(n log(n+1)). Kasai — O(n). Вспомогательная память и память результата — O(n+1). Пустой вход — O(1).",
+        "note": "ana встречается с началами 1 и 3; длина 3 равна max(lcp). Эти вхождения перекрываются.",
+        "explain": "Что кодирует rank pair? Чем порядок суффиксов отличается от порядка их исходных индексов? Почему max LCP даёт длину самого длинного повтора?"
+      },
+      "explain": "Rank pairs, Kasai reuse and why maximum adjacent LCP gives a longest repeat."
+    },
+    {
+      "assignment": 4,
+      "task": 6,
+      "command": "aho",
+      "name": "Search a dictionary — Aho–Corasick",
+      "points": 9,
+      "purpose": "Build one dictionary automaton and count its patterns in several independent texts.",
+      "input": "{task:aho,patterns:[nonempty strings,...],texts:[strings,...]}",
+      "output": "{counts:[[count for each dictionary position],...]}",
+      "domain": "0 <= number of patterns <= 10000; total pattern length <= 100000; 0 <= number of texts <= 100; total text length <= 200000. Patterns are nonempty; texts may be empty.",
+      "requirements": "Build one Aho-Corasick trie/automaton per request, with suffix/failure links. Query it for each independent text; reset state and counts. Count overlaps and suffix-pattern matches. Duplicate patterns are separate dictionary positions and receive equal counts. An empty dictionary produces an empty count row per text. An empty texts array produces []. Do not replace the automaton by multiple KMP searches. Count results using visit propagation along failure links or correct output-link traversal. Output rows follow texts order; columns follow original dictionary positions. An empty text has one zero per dictionary position. The response is counts, not a list of all individual matches: share duplicate terminal states and aggregate counts rather than creating one record for every dictionary-entry occurrence. For dense matches, use reverse-failure visit propagation or an equally efficient aggregation; a literal per-match traversal can exceed the time limit despite being logically correct.",
+      "complexity": "Let L be total pattern length including duplicates, p dictionary size, and S trie states including the root. With the fixed 95-character ASCII alphabet, construction takes O(L+95*S+p) time and O(95*S+p) auxiliary memory. Reverse-failure propagation per independent text takes O(|text|+S+p). Output-link traversal instead takes O(|text|+z+p), where z counts visited terminal matches; it is not a guarantee of meeting the limits on dense inputs. Output memory is O(q*(p+1)+1) for q texts; retain one empty row per text when p=0. Avoid quadratically copied inherited output lists.",
+      "example_in": {
+        "task": "aho",
+        "patterns": [
+          "he",
+          "she",
+          "he"
+        ],
+        "texts": [
+          "sheshe",
+          "sheshe",
+          ""
+        ]
+      },
+      "example_out": {
+        "counts": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ]
+      },
+      "example_note": "he is a suffix of she and is counted too. The repeated text starts with fresh counts.",
+      "name_ru": "Поиск словаря шаблонов — Aho–Corasick",
+      "purpose_ru": "Постройте один автомат словаря и посчитайте вхождения шаблонов в независимых текстах.",
+      "ru": {
+        "domain": "0 ≤ число patterns ≤ 10000; общая длина patterns ≤ 100000; каждый шаблон непустой. 0 ≤ число texts ≤ 100; общая длина texts ≤ 200000; отдельный текст может быть пустым.",
+        "requirements": "Один trie/автомат Aho–Corasick с failure links на запрос. Для каждого текста начинайте состояние и счётчики заново. Учитывайте перекрытия и шаблоны-суффиксы. Дубликаты словаря — отдельные позиции с одинаковым счётчиком. counts содержит строку на каждый текст и столбец на каждый элемент patterns в исходном порядке. Пустой словарь даёт [] для каждого текста; пустой texts даёт []. Пустой текст даёт нули. Не заменяйте автомат отдельными KMP-поисками. Допустимы распространение посещений по failure links или корректный обход output links; не копируйте квадратично растущие списки унаследованных выходов. Требуется матрица счётчиков, а не список отдельных совпадений. Одинаковые шаблоны могут разделять терминальное состояние; не создавайте запись на каждое вхождение каждой копии словаря. На плотных совпадениях используйте распространение посещений по failure links в обратном порядке или столь же эффективное агрегирование: буквальный обход всех совпадений может не уложиться во время, даже считая их правильно.",
+        "complexity": "L — суммарная длина шаблонов с дубликатами, p — размер словаря, S — число состояний trie с корнем. Для фиксированного ASCII из 95 символов построение занимает O(L+95·S+p) времени и O(95·S+p) вспомогательной памяти. На каждый независимый текст распространение посещений требует O(|text|+S+p). Обход output links вместо этого требует O(|text|+z+p), где z — число посещённых терминальных совпадений, и не гарантирует прохождение плотных случаев по времени. Матрица ответа занимает O(q·(p+1)+1) для q текстов; при p=0 сохраняется пустая строка на каждый текст. Не копируйте квадратично растущие списки унаследованных выходов.",
+        "note": "he — суффикс she; оба шаблона учитываются. Второй одинаковый текст не накапливает счётчики первого.",
+        "explain": "Что сохраняет failure link? Как учесть шаблон-суффикс и дубликаты? Почему распространение счётчиков идёт в обратном BFS-порядке?"
+      },
+      "explain": "Failure links, suffix-pattern counts, duplicates and independent texts."
+    }
+  ]
+}

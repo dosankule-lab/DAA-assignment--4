@@ -1,0 +1,12 @@
+TIME lcs 1000x1000                                     16.7 ms (parse, run, write, re-parse)
+TIME merge n=200                                        6.3 ms (parse, run, write, re-parse)
+TIME tree chain n=100000                              135.5 ms (parse, run, write, re-parse)
+TIME tree random n=100000                             190.6 ms (parse, run, write, re-parse)
+TIME kmp 200000/100000                                 33.4 ms (parse, run, write, re-parse)
+TIME rk 10000/2000                                     99.6 ms (parse, run, write, re-parse)
+TIME suffix 50000 random                               16.4 ms (parse, run, write, re-parse)
+TIME suffix 50000 all-a                                44.2 ms (parse, run, write, re-parse)
+TIME suffix 50000 periodic                             15.8 ms (parse, run, write, re-parse)
+TIME aho dense 10000 patterns x 100 texts             138.4 ms (parse, run, write, re-parse)
+TIME aho 10000x10 patterns, 200000 text chars         168.1 ms (parse, run, write, re-parse)
+TOTAL passed=12110 failed=0

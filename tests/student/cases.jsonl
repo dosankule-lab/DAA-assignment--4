@@ -1,0 +1,22 @@
+{"task":"lcs","a":"tea_time","b":"team"}
+{"task":"lcs","a":"","b":"abc"}
+{"task":"lcs","a":"abcbdab","b":"bdcaba"}
+{"task":"merge","sizes":[2,3,4]}
+{"task":"merge","sizes":[1,100,100,1]}
+{"task":"merge","sizes":[1,1,1]}
+{"task":"merge","sizes":[]}
+{"task":"tree","n":3,"weights":[4,9,6],"edges":[[0,1],[1,2]]}
+{"task":"tree","n":3,"weights":[-3,-1,-2],"edges":[[0,1],[1,2]]}
+{"task":"tree","n":4,"weights":[1,10,10,10],"edges":[[0,1],[0,2],[0,3]]}
+{"task":"naive","text":"aaaaa","pattern":"aaa"}
+{"task":"kmp","text":"abc","pattern":""}
+{"task":"rk","text":"abdj","pattern":"ab"}
+{"task":"rk","text":"djdjab","pattern":"ab"}
+{"task":"kmp","text":"a b  a b","pattern":" "}
+{"task":"suffix","text":"banana"}
+{"task":"suffix","text":"aaaaa"}
+{"task":"suffix","text":"abcdef"}
+{"task":"aho","patterns":["he","she","he"],"texts":["sheshe","sheshe",""]}
+{"task":"aho","patterns":["he","she","his","hers"],"texts":["ushers"]}
+{"task":"aho","patterns":["aa","a","aaa","aa"],"texts":["aaaa","a",""]}
+{"task":"aho","patterns":[],"texts":["abc",""]}
